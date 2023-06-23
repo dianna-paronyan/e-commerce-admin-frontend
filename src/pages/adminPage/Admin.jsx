@@ -17,6 +17,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 
 function Admin() {
   const [users, setUsers] = useState([]);
@@ -87,6 +88,11 @@ function Admin() {
           <Link to="/categories">
             <MenuItem sx={{ color: "#A8B3C7" }}>
               <CategoryIcon /> Categories
+            </MenuItem>
+          </Link>
+          <Link to="/orders">
+            <MenuItem sx={{ color: "#A8B3C7" }}>
+              <ShoppingCartCheckoutIcon /> Orders
             </MenuItem>
           </Link>
         </MenuList>
