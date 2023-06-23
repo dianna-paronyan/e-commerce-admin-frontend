@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import useAuth from "../hooks/useAuth";
 
@@ -7,13 +7,23 @@ const ProtectedRoute = (props) => {
   const navigate = useNavigate();
   const { user, decodedToken } = useAuth();
   const checkUserToken = () => {
-    if (!user || decodedToken.role === 0) {
-      return navigate("/login");
+    try {
+      const storedToken = localStorage.getItem("user");
+      if (
+        !user ||
+        !decodedToken ||
+        (decodedToken.role === 0 &&
+          JSON.parse(storedToken)?.jwt !== decodedToken)
+      ) {
+        navigate("/login");
+      }
+    } catch (error) {
+      navigate("/login");
     }
   };
   useEffect(() => {
     checkUserToken();
-  }, [user]);
+  }, [user, decodedToken]);
   return <>{decodedToken ? props.children : null}</>;
 };
 export default ProtectedRoute;
