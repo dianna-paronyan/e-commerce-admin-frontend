@@ -47,7 +47,6 @@ function CreateProduct() {
         method: "POST",
         body: formData,
         headers: {
-          "Content-type": "multipart/form-data; charset=UTF-8",
           Authorization: user.jwt,
         },
       });
@@ -89,7 +88,6 @@ function CreateProduct() {
         component="form"
         autoComplete="off"
         onSubmit={createProduct}
-        // encType="multipart/form-data"
       >
         <TextField
           id="outlined-basic"
@@ -101,12 +99,8 @@ function CreateProduct() {
         <TextField
           id="outlined-basic"
           name="image"
-          label="Image"
-          variant="outlined"
           inputProps={{multiple:true}}
-          // value={product.image}
           type="file"
-          // onChange={(e) => setProduct(prevState => ({ ...prevState, image: e.target.value }))}
           onChange={(e) => { setFiles(e.target.files) }}
         />
         <FormControl fullWidth>
@@ -148,7 +142,7 @@ function CreateProduct() {
         />
         <Typography  component='p' color="red" sx={{ height:'10px',textAlign:'center',fontSize:'15px'}}>{err ? err : ''}</Typography>
         <Button variant="outlined" onClick={createProduct}>
-          Submit
+          Create
         </Button>
       </Box>
     </div>
