@@ -1,69 +1,89 @@
-import { useTheme } from '@mui/material/styles';
-import { LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer } from 'recharts';
-import Typography from '@mui/material/Typography';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import useLocalStorage from "../hooks/useLocalStorage";
+import { Box, Button } from "@mui/material";
+import { Typography } from "@mui/material";
+import TextField from "@mui/material/TextField";
 
-function createData(time, amount) {
-  return { time, amount };
-}
+function CreateCategory() {
+  const [name, setName] = useState("");
+  const [created, setCreated] = useState('');
+  const [err, setErr] = useState("");
+  const navigate = useNavigate();
 
-const data = [
-  createData('00:00', 0),
-  createData('03:00', 300),
-  createData('06:00', 600),
-  createData('09:00', 800),
-  createData('12:00', 1500),
-  createData('15:00', 2000),
-  createData('18:00', 2400),
-  createData('21:00', 2400),
-  createData('24:00', undefined),
-];
-
-export default function Chart() {
-  const theme = useTheme();
-
+  async function createCategory(e) {
+    e.preventDefault();
+    const {user} = useLocalStorage()
+    if (name.trim() === "") {
+      setErr("Add Category Name");
+      return;
+    }
+    try {
+      const response = await fetch("http://localhost:5000/createCategory", {
+        method: "POST",
+        body: JSON.stringify({
+          name,
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          Authorization: user.jwt,
+        },
+      });
+      setErr('');
+      setCreated('')
+      if (!response.ok) {
+        setCreated('')
+        setErr('Not Found');
+      } else {
+        setErr("");
+        setCreated('Category Created')
+        navigate("/categories");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+    setName("");
+  }
   return (
-    <>
-      <Typography component="h2" variant="h6" color="primary" gutterBottom>Today</Typography>
-      <ResponsiveContainer>
-        <LineChart
-          data={data}
-          margin={{
-            top: 16,
-            right: 16,
-            bottom: 0,
-            left: 24,
-          }}
-        >
-          <XAxis
-            dataKey="time"
-            stroke={theme.palette.text.secondary}
-            style={theme.typography.body2}
-          />
-          <YAxis
-            stroke={theme.palette.text.secondary}
-            style={theme.typography.body2}
-          >
-            <Label
-              angle={270}
-              position="left"
-              style={{
-                textAnchor: 'middle',
-                fill: theme.palette.text.primary,
-                ...theme.typography.body1,
-              }}
-            >
-              Sales ($)
-            </Label>
-          </YAxis>
-          <Line
-            isAnimationActive={false}
-            type="monotone"
-            dataKey="amount"
-            stroke={theme.palette.primary.main}
-            dot={false}
-          />
-        </LineChart>
-      </ResponsiveContainer>
-    </>
+    <Box
+      sx={{
+        "& > :not(style)": { m: 1, width: "41ch" },
+        marginTop: "20px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+      }}
+      
+    >
+      <Typography
+        component="h2"
+        variant="h5"
+        color="#333"
+        sx={{ textAlign: "center", marginTop: "15px" }}
+      >
+        Create Category
+      </Typography>
+      <Typography  component='p' color="blue" sx={{ height:'10px',textAlign:'center',fontSize:'15px'}}>{created ? created : ''}</Typography>
+      <TextField
+        id="outlined-basic"
+        label="Name"
+        variant="outlined"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <Typography
+        component="p"
+        color="red"
+        sx={{ height: "10px", textAlign: "center", fontSize: "15px" }}
+      >
+        {err ? err : ""}
+      </Typography>
+      <Button variant="outlined" onClick={createCategory}>
+        Create
+      </Button>
+    </Box>
   );
 }
+
+export default CreateCategory;
