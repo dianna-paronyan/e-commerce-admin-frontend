@@ -18,7 +18,7 @@ const settings = ["Profile", "Account", "Dashboard", "Logout"];
 function Header() {
   const navigate = useNavigate();
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const {user} = useLocalStorage()
+  const { user } = useLocalStorage();
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -40,8 +40,8 @@ function Header() {
       >
         <Toolbar>
           <ImageListItem>
-            <Link to='/admin'>
-              <img style={{ width: "90px" }} src="" />
+            <Link to="/admin">
+              <img style={{ width: "105px" }} src="../../../glass-logo.png" />
             </Link>
           </ImageListItem>
           <Typography
@@ -49,8 +49,16 @@ function Header() {
             component="div"
             sx={{ flexGrow: 1 }}
           ></Typography>
-          <Box sx={{ flexGrow: 0, display:'flex', justifyContent:'center', alignItems:'center',gap:'5px' }}>
-              <Typography color='#333'>{user?.userName}</Typography>
+          <Box
+            sx={{
+              flexGrow: 0,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "5px",
+            }}
+          >
+            <Typography color="#333">{user?.userName}</Typography>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Avatar" src="" />
