@@ -13,6 +13,7 @@ import CreateCategory from "../components/CreateCategory";
 import ProtectedRoute from "./ProtectedRoute";
 import EditCategory from "../components/EditCategory";
 import NotFound from "../components/NotFound";
+import Order from "../components/Order";
 
 function AppRoutes() {
   const {user} = useLocalStorage();
@@ -31,8 +32,9 @@ function AppRoutes() {
         <Route path="/categories" element={<ProtectedRoute><Categories /></ProtectedRoute>} />
         <Route path="/createCategory" element={<ProtectedRoute><CreateCategory /></ProtectedRoute>} />
         <Route path="/updateCategory/:id" element={<ProtectedRoute><EditCategory /></ProtectedRoute>} />
-        <Route path="*" element={<NotFound />} />
+        <Route path="/orders" element={<ProtectedRoute><Order /></ProtectedRoute>} />
       </Route>
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }
