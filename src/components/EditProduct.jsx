@@ -14,9 +14,9 @@ function EditProduct() {
   const [categories, setCategories] = useState([]);
   const [product, setProduct] = useState({});
   const [files, setFiles] = useState([]);
-  const [updated, setUpdated] = useState('');
-  const [err, setErr] = useState('');
-  const [emptyErr, setEmptyErr] = useState('');
+  const [updated, setUpdated] = useState("");
+  const [err, setErr] = useState("");
+  const [emptyErr, setEmptyErr] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -37,10 +37,15 @@ function EditProduct() {
   }, []);
 
   const updateProduct = async (id) => {
-    const {user} = useLocalStorage()
-    if(product.name === '' || product.categoryId === '' || product.price === '' || 
-    product.description === '' || product.quantity === ''){
-      setEmptyErr('Fill all fields');
+    const { user } = useLocalStorage();
+    if (
+      product.name === "" ||
+      product.categoryId === "" ||
+      product.price === "" ||
+      product.description === "" ||
+      product.quantity === ""
+    ) {
+      setEmptyErr("Fill all fields");
       return;
     }
     const formData = new FormData();
@@ -64,12 +69,12 @@ function EditProduct() {
         }
       );
       if (!response.ok) {
-        setUpdated('');
-        setErr('Not Found');
-      }else{
-        setEmptyErr('');
-        setUpdated('Product Updated');
-        navigate('/products')
+        setUpdated("");
+        setErr("Not Found");
+      } else {
+        setEmptyErr("");
+        setUpdated("Product Updated");
+        navigate("/products");
       }
     } catch (err) {
       console.log(err);
@@ -86,8 +91,14 @@ function EditProduct() {
       >
         Edit Product
       </Typography>
-      <Typography  component='p' color="blue" sx={{ height:'10px',textAlign:'center',fontSize:'15px'}}>{err ? err : updated}</Typography>
-      {product.name !==undefined ? (
+      <Typography
+        component="p"
+        color="blue"
+        sx={{ height: "10px", textAlign: "center", fontSize: "15px" }}
+      >
+        {err ? err : updated}
+      </Typography>
+      {product.name !== undefined ? (
         <Box
           component="form"
           sx={{
@@ -115,25 +126,19 @@ function EditProduct() {
 
           <TextField
             id="image"
-            label="Image"
             variant="outlined"
-            value={product.image}
             name="image"
-            inputProps={{multiple:true}}
+            inputProps={{ multiple: true }}
             type="file"
-            onChange={(e) =>
-              setFiles(e.target.files)
-            }
+            onChange={(e) => setFiles(e.target.files)}
           />
           <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">
-              Category
-            </InputLabel>
+            <InputLabel id="demo-simple-select-label">Category</InputLabel>
             <Select
-               labelId="categoryId"
-               id="category"
-               value={product.categoryId}
-               label="Category"
+              labelId="categoryId"
+              id="category"
+              value={product.categoryId}
+              label="Category"
               onChange={(e) =>
                 setProduct((prevState) => ({
                   ...prevState,
@@ -184,8 +189,14 @@ function EditProduct() {
               }))
             }
           />
-          <Typography  component='p' color="red" sx={{ height:'10px',textAlign:'center',fontSize:'15px'}}>{emptyErr ? emptyErr : ''}</Typography>
-          <Button variant="outlined" onClick={()=>updateProduct(id)}>
+          <Typography
+            component="p"
+            color="red"
+            sx={{ height: "10px", textAlign: "center", fontSize: "15px" }}
+          >
+            {emptyErr ? emptyErr : ""}
+          </Typography>
+          <Button variant="outlined" onClick={() => updateProduct(id)}>
             Update
           </Button>
         </Box>
